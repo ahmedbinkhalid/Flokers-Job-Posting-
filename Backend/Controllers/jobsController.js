@@ -1,4 +1,5 @@
 const jobModel = require('../Models/jobsModel');
+const subsController = require('./subsController')
 
 exports.addJob = async (req, res, next)=>{
     try{
@@ -16,6 +17,7 @@ exports.addJob = async (req, res, next)=>{
         };
         const result = await jobModel.addjob(db, jobData);
         res.status(200).json({message: "Job Added Successfuly", jobId: result.insertedId})
+        await subsController.sendEmailsToSubscribers(db, carData);
     } catch(error){
         console.error("Error:", error);
         res.status(500).json({message: error.message});

@@ -7,6 +7,10 @@ const cookieParser = require("cookie-parser");
 require('dotenv').config();
 const MongoConnect = require('./utils/database')
 const jobRoutes = require('./Routes/jobRoutes');
+const authRoutes = require('./Routes/userRoutes');
+const subsRoutes = require('./Routes/subsRoutes');
+
+
 const app = express();
 
 app.use(cookieParser());
@@ -26,6 +30,8 @@ app.use((req, res, next)=>{
 MongoConnect(client =>{
     app.locals.db = client.db('flokers');
     app.use('/api', jobRoutes);
+    app.use('/api', authRoutes);
+    app.use('/api', subsRoutes);
     app.listen(process.env.PORT);
 
 });
